@@ -1,6 +1,6 @@
 package com.example;
 
-//testing automation
+//testing automation 2
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
