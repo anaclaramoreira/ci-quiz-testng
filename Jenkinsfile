@@ -6,7 +6,9 @@ pipeline {
     // jdk 'JDK 24'
   }
 
-  options { timestamps() }
+  options {
+    timestamps()
+  }
 
   triggers {
     githubPush()
@@ -21,8 +23,33 @@ pipeline {
 
     stage('Test') {
       steps {
-        bat 'mvn -B -q test'
+        bat 'mvn -B clean test'
       }
+    }
+  }
+
+  post {
+    always {
+      // Publica os resultados do TestNG no Jenkins
+      junit '**/target/surefire-reports/*.xml'
+
+      // Se quiser também gerar relatório HTML dos testes
+      publishHTML(target: [
+        reportDir: 'target/surefire-reports',
+        reportFiles: 'index.html',
+        reportName: 'Test Report',
+        allowMissing: true,
+        alwaysLinkToLastBuild: true,
+        keepAll: true
+      ])
+    }
+
+    success {
+      echo '✅ All TestNG tests passed!'
+    }
+
+    failure {
+      echo '❌ Some tests failed!'
     }
   }
 }
