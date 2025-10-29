@@ -32,16 +32,6 @@ pipeline {
     always {
       // Publica os resultados do TestNG no Jenkins
       junit '**/target/surefire-reports/*.xml'
-
-      // Se quiser também gerar relatório HTML dos testes
-      publishHTML(target: [
-        reportDir: 'target/surefire-reports',
-        reportFiles: 'index.html',
-        reportName: 'Test Report',
-        allowMissing: true,
-        alwaysLinkToLastBuild: true,
-        keepAll: true
-      ])
     }
 
     success {
